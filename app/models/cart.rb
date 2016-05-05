@@ -31,7 +31,6 @@ class Cart < ActiveRecord::Base
       self.line_items.build(item_id: new_item_id)
     end
   end
-
     #line_item schema
       # t.integer  "cart_id"
       # t.integer  "item_id"

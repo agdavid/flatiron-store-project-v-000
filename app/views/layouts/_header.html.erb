@@ -1,15 +1,20 @@
 <nav class="">
     <ul>
+        <!-- always shows -->
         <li> <%= link_to "Store Home", store_path %> </li>
-        <% if !!@cart %>
-          <li> <%= link_to "Cart", cart_path(current_cart) %></li>
+        <!-- only shows to guest (not logged in) -->
+        <% if !user_signed_in? %>
+          <li> <%= link_to "sign in", new_user_session_path %></li>
+          <li> <%= link_to "Sign up", new_user_registration_path%></li>
         <% end %>
-    
-        <li> <%= link_to "sign in", new_user_session_path %></li>
-        <li> <%= link_to "Sign up", new_user_registration_path%></li>
+        <!-- only shows to logged in user -->
         <% if user_signed_in? %>
           <li> <%= link_to "Sign out", destroy_user_session_path, method:"delete"%></li>
           <li>Signed in as <%= current_user.email %></li>
+          <!-- only shows to logged in user with current cart -->
+          <% if current_user.current_cart %>
+            <li> <%= link_to "Cart", cart_path(current_user.current_cart) %></li>
+          <% end %>
         <% end %>
     
     </ul>
