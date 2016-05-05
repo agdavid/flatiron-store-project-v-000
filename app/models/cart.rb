@@ -37,9 +37,9 @@ class Cart < ActiveRecord::Base
       # t.integer  "quantity",   default: 1
 
     ### CHECKOUT METHODS ###
-    def complete_checkout
+    def update_inventory_and_status
       self.update_inventory
-      self.close_current_cart
+      self.update_status  
     end
 
     def update_inventory
@@ -53,6 +53,11 @@ class Cart < ActiveRecord::Base
         actual_item.inventory -= quantity_purchased
         actual_item.save
       end
+    end
+
+    def update_status
+      self.status = "submitted"
+      self.save
     end
 
 end
