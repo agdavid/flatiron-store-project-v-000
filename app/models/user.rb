@@ -16,4 +16,9 @@ class User < ActiveRecord::Base
     self.save
   end
 
+  def close_current_cart
+    self.current_cart_id = nil
+    self.save
+  end
+
 end

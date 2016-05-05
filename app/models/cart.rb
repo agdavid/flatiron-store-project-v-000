@@ -35,4 +35,24 @@ class Cart < ActiveRecord::Base
       # t.integer  "cart_id"
       # t.integer  "item_id"
       # t.integer  "quantity",   default: 1
+
+    ### CHECKOUT METHODS ###
+    def complete_checkout
+      self.update_inventory
+      self.close_current_cart
+    end
+
+    def update_inventory
+      #go through each line_item of the current_cart
+      self.line_items.each do |line_item|
+        #find the item
+        actual_item = Item.find(line_item.item_id)
+        #find the quantity purchased
+        quantity_purchased = line_item.quantity
+        #reduce inventory
+        actual_item.inventory -= quantity_purchased
+        actual_item.save
+      end
+    end
+
 end
