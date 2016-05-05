@@ -1,13 +1,21 @@
+require 'pry'
+
 class Cart < ActiveRecord::Base
   belongs_to :user
   has_many :line_items
   has_many :items, through: :line_items
 
   def total
-    #SELECT sum(price) as total FROM items WHERE
-    #JOIN line_items ON line_item.cart_id = cart.id
-    #JOIN items ON item.id = line_item.item_id
-    self.items.sum("price")
+    #iterate over all the line_items in a cart
+    self.line_items.collect do |line_item|
+      #for each item get the price
+      item_price = Item.find(line_item.item_id).price
+      #for each item get the quantity
+      item_quantity = line_item.quantity
+      #get the total and collect into an array
+      item_total = (item_price*item_quantity)
+      #use #inject to sum all the totals in the array
+    end.inject(0){|sum,x| sum + x }
   end
 
   def add_item(new_item_id)
